@@ -27,21 +27,21 @@ return {
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
     {
-      '<F5>',
+      '<leader>dc',
       function()
         require('dap').continue()
       end,
       desc = 'Debug: Start/Continue',
     },
     {
-      '<F1>',
+      '<leader>di',
       function()
         require('dap').step_into()
       end,
       desc = 'Debug: Step Into',
     },
     {
-      '<F2>',
+      '<leader>do',
       function()
         require('dap').step_over()
       end,
@@ -136,6 +136,19 @@ return {
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
+    dap.configurations.java = {
+      {
+        type = 'java',
+        request = 'launch',
+        name = 'Launch current file',
+        mainClass = function()
+          return vim.fn.input('Main class: ', '', 'file')
+        end,
+        projectName = function()
+          return vim.fn.input('Project name: ', '')
+        end,
+      },
+    }
     -- Install golang specific config
     require('dap-go').setup {
       delve = {
